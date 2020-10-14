@@ -197,7 +197,7 @@ def stream(cap, camera):
 
         yield(b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + jpeg + b'\r\n\r\n')
-        time.sleep(1)
+        #time.sleep(1)
 
 def stream_video_view(request, pk):
     camera = Camera.objects.get(pk=pk)
