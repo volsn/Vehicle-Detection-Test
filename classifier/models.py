@@ -18,12 +18,12 @@ class Camera(models.Model):
         (2, 'Нижний'),
     )
 
-    ip_adress = models.URLField(blank=False, max_length=124, \
+    ip_adress = models.CharField(blank=False, max_length=124, \
             verbose_name='IP Адрес')
     city = models.PositiveSmallIntegerField(choices=CITY, default=0, \
             verbose_name='Город')
     adress = models.CharField(default='', max_length=256, verbose_name='Адрес')
-    open_link = models.URLField(blank=False, max_length=124, \
+    open_link = models.CharField(blank=False, max_length=124, \
             verbose_name='Ссылка на открытие')
     active = models.BooleanField(default=True, verbose_name='Активна')
 

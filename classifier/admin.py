@@ -16,7 +16,7 @@ class CameraAdmin(admin.ModelAdmin):
     readonly_fields = ('online_view',)
 
     def online_view(self, obj):
-        return format_html('<a href="/visualize/1">Онлайн просмотр</a>')
+        return format_html('<a href="/visualize/{}">Онлайн просмотр</a>'.format(obj.pk))
         #.format(str(obj.id))
     online_view.short_description = 'Камера'
 
