@@ -3,7 +3,8 @@ ENV PYTHONUNBUFFERED=1
 RUN mkdir /code
 WORKDIR /code
 RUN apt-get update ##[edited]
-RUN apt-get install 'libsm6'\ 
+RUN apt-get install 'ffmpeg'\ 
+	'libsm6'\ 
     'libxext6'  -y
 RUN apt-get install libgl1-mesa-glx -y
 

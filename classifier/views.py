@@ -139,7 +139,9 @@ def save_image(camera, image):
 
 # Create your views here.
 
-def stream(cap, camera):
+def stream(ip_adress, camera):
+
+    cap = cv2.VideoCapture(ip_adress)
 
     with open('model.pickle', 'rb') as file:
         model = pickle.load(file)
@@ -155,9 +157,11 @@ def stream(cap, camera):
         }})
     detector.fit('yolo-coco')
 
+    i = 0
     while True:
 
-        print('foo')
+        if not cap.isOpened():
+            cap = cv2.VideoCapture(ip_adress)
 
         try:
             ret, image = cap.read() # Reading image from videocap
@@ -200,16 +204,17 @@ def stream(cap, camera):
         except:
             pass
 
-        yield(b'--frame\r\n'
-            b'Content-Type: image/jpeg\r\n\r\n' + jpeg + b'\r\n\r\n')
+        if i % 10 == 0:
+            yield(b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + jpeg + b'\r\n\r\n')
+        time.sleep(0.5)
         #time.sleep(1)
 
 def stream_video_view(request, pk):
     camera = Camera.objects.get(pk=pk)
     ip_adress = camera.ip_adress
-    cap = cv2.VideoCapture(ip_adress)
 
-    response = StreamingHttpResponse(stream(cap, camera), \
+    response = StreamingHttpResponse(stream(ip_adress, camera), \
                 content_type="multipart/x-mixed-replace;boundary=frame")
     return response
 
