@@ -157,6 +157,8 @@ def stream(cap, camera):
 
     while True:
 
+        print('foo')
+
         try:
             ret, image = cap.read() # Reading image from videocap
             original = image.copy()
@@ -192,8 +194,11 @@ def stream(cap, camera):
             cv2.rectangle(image, (x, y), (x + w, y + h), color, 2)
 
 
-        ret, jpeg = cv2.imencode('.jpg', image)
-        jpeg = jpeg.tobytes()
+        try:
+            ret, jpeg = cv2.imencode('.jpg', image)
+            jpeg = jpeg.tobytes()
+        except:
+            pass
 
         yield(b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + jpeg + b'\r\n\r\n')
