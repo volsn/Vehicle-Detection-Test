@@ -20,12 +20,18 @@ class Camera(models.Model):
 
     ip_adress = models.CharField(blank=False, max_length=124, \
             verbose_name='IP Адрес')
+    mask = models.ImageField(upload_to='masks/', verbose_name='Маска')
     city = models.PositiveSmallIntegerField(choices=CITY, default=0, \
             verbose_name='Город')
     adress = models.CharField(default='', max_length=256, verbose_name='Адрес')
     open_link = models.CharField(blank=False, max_length=124, \
             verbose_name='Ссылка на открытие')
-    active = models.BooleanField(default=True, verbose_name='Активна')
+    active = models.BooleanField(default=True, verbose_name='Активна',
+        help_text='Считывать ли данные при работе программы')
+    seconds = models.PositiveSmallIntegerField(default=1, \
+            verbose_name='Частота считывания (секунд)', \
+            help_text='При установке параметра учитывать \
+            частоту траффика на конкртеном шлагбауме')
 
     class Meta:
         verbose_name = 'Камера'
@@ -35,11 +41,20 @@ class Camera(models.Model):
         return str(self.get_city_display()) + '. ' + str(self.adress)
 
 class Shot(models.Model):
+    CLASSES = (
+        (0, 'Скорая'),
+        (1, 'Гражданское')
+    )
+
     camera = models.ForeignKey(Camera, on_delete=models.CASCADE, \
             verbose_name='Камера')
-    image = models.ImageField(upload_to='', verbose_name='Изображение')
+    image = models.ImageField(upload_to='', verbose_name='Полное изображение')
+    car = models.ImageField(upload_to='', verbose_name='Само авто')
     timestamp = models.CharField(max_length=256, editable=False, \
             verbose_name='Информация')
+    type = models.PositiveSmallIntegerField(choices=CLASSES, default=0, \
+            verbose_name='Класс')
+    proba = models.FloatField(verbose_name='Уверенность модели')
 
     def save(self, *args, **kwargs):
         self.timestamp = self.generate_name()
@@ -52,8 +67,8 @@ class Shot(models.Model):
         return str(self.camera) + '. ' + time_
 
     class Meta:
-        verbose_name = 'Скорая'
-        verbose_name_plural = 'Скорые'
+        verbose_name = 'Машина'
+        verbose_name_plural = 'Машины'
 
     def __str__(self):
         return self.timestamp

@@ -5,8 +5,10 @@ from classifier.models import Camera, Shot
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.files.base import ContentFile
+from django.conf import settings
 
 import numpy as np
+import threading
 import cv2
 import os
 import requests
@@ -117,9 +119,9 @@ def classify_sklearn(model, image):
     output = model.predict(image)
 
     if output[0] == 1:
-        return 'civilian'
+        return 1, 1
     else:
-        return 'ambulance'
+        return 0, 1
 
 
 def get_random_string(length):
@@ -127,21 +129,30 @@ def get_random_string(length):
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
 
-def save_image(camera, image):
+def save_image(camera, image, roi, label, proba):
     filename = 'temp/{}.jpg'.format(get_random_string(10))
+    filename_roi = 'temp/{}.jpg'.format(get_random_string(10))
     cv2.imwrite(filename, image)
-    shot = Shot(camera=camera)
+    cv2.imwrite(filename_roi, roi)
+    shot = Shot(camera=camera, type=label, proba=proba)
     shot.image.save(
         shot.generate_name() + '.jpg',
         open(filename, 'rb')
+    )
+    shot.car.save(
+        shot.generate_name() + '.jpg',
+        open(filename_roi, 'rb')
     )
     shot.save()
 
 # Create your views here.
 
-def stream(ip_adress, camera):
+def get_segment_crop(img,tol=0, mask=None):
+    if mask is None:
+        mask = img > tol
+    return img[np.ix_(mask.any(1), mask.any(0))]
 
-    cap = cv2.VideoCapture(ip_adress)
+def read_camera(camera):
 
     with open('model.pickle', 'rb') as file:
         model = pickle.load(file)
@@ -149,7 +160,7 @@ def stream(ip_adress, camera):
     detector = \
         VehicleDetector({
             "labels": ["car", "truck", "bus"],
-            "min_confidence": 0.3,
+            "min_confidence": 0.5,
             "threshold": 0.3,
             "min_sizes": {
                 "width": 50,
@@ -157,88 +168,87 @@ def stream(ip_adress, camera):
         }})
     detector.fit('yolo-coco')
 
-    i = 0
-    while True:
+    mask = cv2.imread(os.path.join(settings.MEDIA_ROOT, str(camera.mask)))
+    mask = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
 
-        if not cap.isOpened():
-            cap = cv2.VideoCapture(ip_adress)
+    cap = cv2.VideoCapture(camera.ip_adress)
+    thread = threading.currentThread()
+    print(camera.seconds)
 
-        try:
-            ret, image = cap.read() # Reading image from videocap
-            original = image.copy()
-        except:
-            continue
+    count = 0
+    if cap.isOpened():
+        while True:
 
-        try:
-            boxes = detector.predict(image) # Detecting boxes
-        except:
-            continue
+            if not getattr(thread, "do_run", True):
+                return
 
-        for box, _ in boxes:
-            (y, h, x, w) = box
-            roi = image[y: y+h, x: x+w]
+            count += 1
+            print('foo', count)
+            ret, image = cap.read()
 
             try:
-                label = classify_sklearn(model, roi) # Classifying the vehicle
+                orig = image.copy()
             except:
+                cap = cv2.VideoCapture(camera.ip_adress)
                 continue
 
-            if label == 'ambulance':
-                color = (0, 255, 0)
+            if count % camera.seconds == 0:
+                cv2.imwrite('test_{}.png'.format(camera.pk), image)
+                print('foo-count', count)
 
-                if camera.active:
+                try:
+                    image = cv2.bitwise_and(image, image, mask=mask)
+                except:
+                    cap = cv2.VideoCapture(camera.ip_adress)
+                    continue
+
+                try:
+                    boxes = detector.predict(image)
+                except:
+                    cap = cv2.VideoCapture(camera.ip_adress)
+                    continue
+
+                for box, _ in boxes:
+                    (y, h, x, w) = box
+                    roi = image[y: y+h, x: x+w]
+                    cv2.imwrite(get_random_string(10) + '.png', roi)
+
                     try:
-                        requests.get(camera.open_link)
+                        label, proba = classify_sklearn(model, roi)
                     except:
-                        pass
-                    save_image(camera, original)
-            else:
-                color = (0, 0, 255)
+                        cap = cv2.VideoCapture(camera.ip_adress)
+                        continue
 
-            cv2.rectangle(image, (x, y), (x + w, y + h), color, 2)
-
-
-        try:
-            ret, jpeg = cv2.imencode('.jpg', image)
-            jpeg = jpeg.tobytes()
-        except:
-            pass
-
-        if i % 10 == 0:
-            yield(b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + jpeg + b'\r\n\r\n')
-        time.sleep(0.5)
-        #time.sleep(1)
-
-def stream_video_view(request, pk):
-    camera = Camera.objects.get(pk=pk)
-    ip_adress = camera.ip_adress
-
-    response = StreamingHttpResponse(stream(ip_adress, camera), \
-                content_type="multipart/x-mixed-replace;boundary=frame")
-    return response
+                    if label == 0:
+                        requests.get(camera.open_link)
+                    print('bar')
+                    save_image(camera, orig, orig[y: y+h, x: x+w], label, proba)
 
 
-def classify_view(request, sec):
+threads = {}
+
+def start(request):
     cameras = Camera.objects.filter(active=True)
+    for camera in cameras:
+        t = threading.Thread(target=read_camera, args=(camera,))
+        threads[camera.pk] = t
+        t.start()
 
-    while True:
-        for camera in cameras:
-            cap = cv2.VideoCapture(camera.ip_adress)
-            ret, image = cap.read()
-            boxes = detector.predict(image)
-            for box, _ in boxes:
-                (y, h, x, w) = box
-                roi = image[y: y+h, x: x+w]
-                label = classify_sklearn(model, roi)
-                if label == 'ambulance':
+    return HttpResponse('Активные камеры: {}'\
+            .format(str(', '.join([camera.adress for camera in cameras]))))
 
-                    # Opening the gates
-                    #requests.get(camera.open_link)
+def stop(request, pk):
+    threads[pk].do_run = False
+    threads[pk].join()
 
-                    # Saving camera shot to SQL
-                    save_image(camera, image)
+    return HttpResponse('Камера {} была отключена'\
+                .format(Camera.objects.get(pk=pk).adress))
 
-        time.sleep(sec)
+def stop_all(request):
+    print(threads)
+    for pk, thread in threads.items():
+        print(thread)
+        thread.do_run = False
+        thread.join()
 
-    return HttpResponse('foo')
+    return HttpResponse('Все камеры были выключены')

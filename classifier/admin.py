@@ -13,14 +13,19 @@ admin.site.site_title = 'Административный сайт'
 @admin.register(Camera)
 class CameraAdmin(admin.ModelAdmin):
     list_filter = ('city', 'active',)
-    readonly_fields = ('online_view',)
+    readonly_fields = ('online_view', 'stop_camera')
 
     def online_view(self, obj):
         return format_html('<a href="/visualize/{}">Онлайн просмотр</a>'.format(obj.pk))
         #.format(str(obj.id))
     online_view.short_description = 'Камера'
 
+    def stop_camera(self, obj):
+        return format_html('<a href="/stop/{}">Выключить считывание</a>'.format(obj.pk))
+    stop_camera.short_description = 'Отключить'
+
 
 @admin.register(Shot)
 class ShotAdmin(admin.ModelAdmin):
-    pass
+    list_filter = ('type',)
+    readonly_fields = ('proba',)
