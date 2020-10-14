@@ -26,8 +26,8 @@ class Camera(models.Model):
     adress = models.CharField(default='', max_length=256, verbose_name='Адрес')
     open_link = models.CharField(blank=False, max_length=124, \
             verbose_name='Ссылка на открытие')
-    active = models.BooleanField(default=True, verbose_name='Активна',
-        help_text='Считывать ли данные при работе программы')
+    active = models.BooleanField(default=False, verbose_name='Активна',
+        help_text='Считываются ли данные при работе программы')
     seconds = models.PositiveSmallIntegerField(default=1, \
             verbose_name='Частота считывания (секунд)', \
             help_text='При установке параметра учитывать \

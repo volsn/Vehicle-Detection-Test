@@ -227,28 +227,46 @@ def read_camera(camera):
 
 threads = {}
 
-def start(request):
-    cameras = Camera.objects.filter(active=True)
+def start(request, pk):
+    camera = Camera.objects.get(pk=pk)
+    t = threading.Thread(target=read_camera, args=(camera,))
+    threads[camera.pk] = t
+    t.start()
+
+    camera.active = True
+    camera.save()
+
+    return HttpResponse('Была запущена камера: {}'.format(camera.adress))
+
+def start_all(request):
+    cameras = Camera.objects.all()
     for camera in cameras:
         t = threading.Thread(target=read_camera, args=(camera,))
         threads[camera.pk] = t
         t.start()
+        camera.active = True
+        camera.save()
 
-    return HttpResponse('Активные камеры: {}'\
-            .format(str(', '.join([camera.adress for camera in cameras]))))
+    return HttpResponse('Запущенны все камеры')
 
 def stop(request, pk):
     threads[pk].do_run = False
     threads[pk].join()
 
+    camera = Camera.objects.get(pk=pk)
+    camera.active=False
+    camera.save()
+
     return HttpResponse('Камера {} была отключена'\
                 .format(Camera.objects.get(pk=pk).adress))
 
 def stop_all(request):
-    print(threads)
     for pk, thread in threads.items():
-        print(thread)
         thread.do_run = False
         thread.join()
+
+        camera = Camera.objects.get(pk=pk)
+        camera.active = False
+        camera.save()
 
     return HttpResponse('Все камеры были выключены')
