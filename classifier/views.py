@@ -181,7 +181,10 @@ def stream(cap, camera):
                 color = (0, 255, 0)
 
                 if camera.active:
-                    requests.get(camera.open_link)
+                    try:
+                        requests.get(camera.open_link)
+                    except:
+                        pass
                     save_image(camera, original)
             else:
                 color = (0, 0, 255)
