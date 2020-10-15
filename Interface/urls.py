@@ -18,9 +18,18 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static, serve
 
+from classifier.models import Camera
+
+def disactivate_all_cameras():
+    for camera in Camera.objects.all():
+        camera.active = False
+        camera.save()
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('classifier.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, \
             {'document_root': settings.MEDIA_ROOT,})
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+disactivate_all_cameras()

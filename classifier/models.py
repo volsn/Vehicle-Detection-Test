@@ -54,7 +54,10 @@ class Shot(models.Model):
             verbose_name='Информация')
     type = models.PositiveSmallIntegerField(choices=CLASSES, default=0, \
             verbose_name='Класс')
-    proba = models.FloatField(verbose_name='Уверенность модели')
+    wrong_label = models.BooleanField(default=False, \
+            verbose_name='Ошибка в классификации', \
+            help_text='При дообучении модели поставить \
+            флаг и изменить класс на верный')
 
     def save(self, *args, **kwargs):
         self.timestamp = self.generate_name()

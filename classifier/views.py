@@ -119,9 +119,9 @@ def classify_sklearn(model, image):
     output = model.predict(image)
 
     if output[0] == 1:
-        return 1, 1
+        return 1
     else:
-        return 0, 1
+        return 0
 
 
 def get_random_string(length):
@@ -129,12 +129,12 @@ def get_random_string(length):
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
 
-def save_image(camera, image, roi, label, proba):
+def save_image(camera, image, roi, label):
     filename = 'temp/{}.jpg'.format(get_random_string(10))
     filename_roi = 'temp/{}.jpg'.format(get_random_string(10))
     cv2.imwrite(filename, image)
     cv2.imwrite(filename_roi, roi)
-    shot = Shot(camera=camera, type=label, proba=proba)
+    shot = Shot(camera=camera, type=label)
     shot.image.save(
         shot.generate_name() + '.jpg',
         open(filename, 'rb')
@@ -210,25 +210,30 @@ def read_camera(camera):
 
                 for box, _ in boxes:
                     (y, h, x, w) = box
-                    roi = image[y: y+h, x: x+w]
+                    roi = orig[y: y+h, x: x+w]
                     cv2.imwrite(get_random_string(10) + '.png', roi)
 
+                    print('bar')
                     try:
-                        label, proba = classify_sklearn(model, roi)
+                        label = classify_sklearn(model, roi)
                     except:
                         cap = cv2.VideoCapture(camera.ip_adress)
                         continue
 
                     if label == 0:
                         requests.get(camera.open_link)
-                    print('bar')
-                    save_image(camera, orig, orig[y: y+h, x: x+w], label, proba)
+                    print('             saved')
+                    save_image(camera, orig, orig[y: y+h, x: x+w], label)
 
 
 threads = {}
 
 def start(request, pk):
     camera = Camera.objects.get(pk=pk)
+
+    if camera.active:
+        return HttpResponse('Ошибка! Камера уже запущена')
+
     t = threading.Thread(target=read_camera, args=(camera,))
     threads[camera.pk] = t
     t.start()
@@ -241,19 +246,23 @@ def start(request, pk):
 def start_all(request):
     cameras = Camera.objects.all()
     for camera in cameras:
-        t = threading.Thread(target=read_camera, args=(camera,))
-        threads[camera.pk] = t
-        t.start()
-        camera.active = True
-        camera.save()
+        if not camera.active:
+            t = threading.Thread(target=read_camera, args=(camera,))
+            threads[camera.pk] = t
+            t.start()
+            camera.active = True
+            camera.save()
 
     return HttpResponse('Запущенны все камеры')
 
 def stop(request, pk):
+    camera = Camera.objects.get(pk=pk)
+    if not camera.active:
+        return HttpResponse('Ошибка! Камера уже выключена')
+
     threads[pk].do_run = False
     threads[pk].join()
 
-    camera = Camera.objects.get(pk=pk)
     camera.active=False
     camera.save()
 
@@ -262,11 +271,13 @@ def stop(request, pk):
 
 def stop_all(request):
     for pk, thread in threads.items():
-        thread.do_run = False
-        thread.join()
-
         camera = Camera.objects.get(pk=pk)
-        camera.active = False
-        camera.save()
+        if camera.active:
+
+            thread.do_run = False
+            thread.join()
+
+            camera.active = False
+            camera.save()
 
     return HttpResponse('Все камеры были выключены')
