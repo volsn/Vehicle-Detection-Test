@@ -6,6 +6,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.files.base import ContentFile
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 import numpy as np
 import threading
@@ -228,6 +229,7 @@ def read_camera(camera):
 
 threads = {}
 
+@login_required
 def start(request, pk):
     camera = Camera.objects.get(pk=pk)
 
@@ -243,6 +245,7 @@ def start(request, pk):
 
     return HttpResponse('Была запущена камера: {}'.format(camera.adress))
 
+@login_required
 def start_all(request):
     cameras = Camera.objects.all()
     for camera in cameras:
@@ -255,6 +258,7 @@ def start_all(request):
 
     return HttpResponse('Запущенны все камеры')
 
+@login_required
 def stop(request, pk):
     camera = Camera.objects.get(pk=pk)
     if not camera.active:
@@ -269,6 +273,7 @@ def stop(request, pk):
     return HttpResponse('Камера {} была отключена'\
                 .format(Camera.objects.get(pk=pk).adress))
 
+@login_required
 def stop_all(request):
     for pk, thread in threads.items():
         camera = Camera.objects.get(pk=pk)
@@ -282,7 +287,7 @@ def stop_all(request):
 
     return HttpResponse('Все камеры были выключены')
 
-
+@login_required
 def partial_train(request):
 
     # Loading model
