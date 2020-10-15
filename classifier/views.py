@@ -281,3 +281,39 @@ def stop_all(request):
             camera.save()
 
     return HttpResponse('Все камеры были выключены')
+
+
+def partial_train(request):
+
+    # Loading model
+    with open('model.pickle', 'rb') as file:
+        model = pickle.load(file)
+
+    # Loading training instances
+    X = []
+    y = []
+    shots = Shot.objects.filter(wrong_label=True)
+    for shot in shots:
+        image = cv2.imread(os.path.join(settings.MEDIA_ROOT, str(shot.car)))
+        image = cv2.resize(image, (64, 64))
+        W, H, C = image.shape
+        image = image.reshape((W * H * C))
+
+        X.append(image)
+        y.append(shot.type)
+
+        shot.wrong_label = False
+        shot.save()
+
+    X = np.array(X).astype(np.float32)
+    y = np.array(y)
+
+    if len(X) == 0:
+        return HttpResponse('Ошибка! Не было выбрано ни одного фото')
+
+    model.partial_fit(X, y)
+
+    with open('model.pickle', 'wb') as file:
+        pickle.dump(model, file)
+
+    return HttpResponse('Модель дообучена!')
