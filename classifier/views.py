@@ -287,7 +287,7 @@ def stop_all(request):
 
     return HttpResponse('Все камеры были выключены')
 
-@login_required
+@login_required 
 def partial_train(request):
 
     # Loading model
