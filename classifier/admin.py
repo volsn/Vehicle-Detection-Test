@@ -15,11 +15,6 @@ class CameraAdmin(admin.ModelAdmin):
     list_filter = ('city', 'active',)
     readonly_fields = ('active', 'stop_camera', 'start_camera',)
 
-    def online_view(self, obj):
-        return format_html('<a href="/visualize/{}">Онлайн просмотр</a>'\
-                .format(obj.pk))
-    online_view.short_description = 'Камера'
-
     def stop_camera(self, obj):
         return format_html('<a href="/stop/{}">Выключить считывание</a>'\
                 .format(obj.pk))
@@ -34,3 +29,48 @@ class CameraAdmin(admin.ModelAdmin):
 @admin.register(Shot)
 class ShotAdmin(admin.ModelAdmin):
     list_filter = ('type',)
+    readonly_fields = ('display_car_image',)
+    list_display = ('timestamp', 'display_car_image_list',)
+    actions = ('change_class_to_ci', 'change_class_to_ambulance')
+
+    """
+    Methods for changing labels
+    """
+    def change_class_to_civil(modeladmin, request, queryset):
+        queryset.update(type=1, wrong_label=True)
+    change_class_to_civil.short_description = 'Изменить класс на "Гражданская"'
+
+    def change_class_to_ambulance(modeladmin, request, queryset):
+        queryset.update(type=0, wrong_label=True)
+    change_class_to_ambulance.short_description = 'Изменить класс на "Скорая"'
+
+    """
+    Methods for displaying images
+    """
+    def display_full_image(self, obj):
+        return format_html('<img src="{url}" width="{width}" height={height} />'.format(
+            url = obj.image.url,
+            width=obj.image.width // 2,
+            height=obj.image.height // 2,
+            )
+        )
+
+    def display_car_image_list(self, obj):
+        k = obj.car.width / 200
+        width = obj.car.width / k
+        height = obj.car.height / k
+
+        return format_html('<img src="{url}" width="{width}" height={height} />'.format(
+            url = obj.car.url,
+            width=width,
+            height=height,
+            )
+        )
+
+    def display_car_image(self, obj):
+        return format_html('<img src="{url}" width="{width}" height={height} />'.format(
+            url = obj.car.url,
+            width=obj.car.width,
+            height=obj.car.height,
+            )
+        )
