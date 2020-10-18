@@ -146,6 +146,9 @@ def save_image(camera, image, roi, label):
     )
     shot.save()
 
+    os.remove(filename)
+    os.remove(filename_roi)
+
 # Create your views here.
 
 def get_segment_crop(img,tol=0, mask=None):
@@ -287,7 +290,7 @@ def stop_all(request):
 
     return HttpResponse('Все камеры были выключены')
 
-@login_required 
+@login_required
 def partial_train(request):
 
     # Loading model
