@@ -31,7 +31,7 @@ class ShotAdmin(admin.ModelAdmin):
     list_filter = ('type',)
     readonly_fields = ('display_car_image',)
     list_display = ('timestamp', 'display_car_image_list',)
-    actions = ('change_class_to_ci', 'change_class_to_ambulance')
+    actions = ('change_class_to_civil', 'change_class_to_ambulance')
 
     """
     Methods for changing labels
@@ -56,7 +56,15 @@ class ShotAdmin(admin.ModelAdmin):
         )
 
     def display_car_image_list(self, obj):
-        k = obj.car.width / 200
+
+        # Resizing
+        width = obj.car.width
+        height = obj.car.height
+        if width > height:
+            k = width / 200
+        else:
+            k = height / 200
+
         width = obj.car.width / k
         height = obj.car.height / k
 
@@ -66,6 +74,7 @@ class ShotAdmin(admin.ModelAdmin):
             height=height,
             )
         )
+    display_car_image_list.short_description = 'Изображение'
 
     def display_car_image(self, obj):
         return format_html('<img src="{url}" width="{width}" height={height} />'.format(
