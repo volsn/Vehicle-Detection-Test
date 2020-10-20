@@ -30,8 +30,11 @@ class CameraAdmin(admin.ModelAdmin):
 class ShotAdmin(admin.ModelAdmin):
     list_filter = ('type',)
     readonly_fields = ('display_car_image',)
-    list_display = ('timestamp', 'display_car_image_list',)
-    actions = ('change_class_to_civil', 'change_class_to_ambulance')
+    list_display = ('timestamp', 'size', 'display_car_image_list',)
+    actions = ('change_class_to_civil', 'change_class_to_ambulance',)
+
+    def size(self, obj):
+        return '{}x{}'.format(obj.car.width, obj.car.height)
 
     """
     Methods for changing labels

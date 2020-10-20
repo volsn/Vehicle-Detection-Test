@@ -167,8 +167,8 @@ def read_camera(camera):
             "min_confidence": 0.5,
             "threshold": 0.3,
             "min_sizes": {
-                "width": 50,
-                "height": 50
+                "width": 175,
+                "height": 175
         }})
     detector.fit('yolo-coco')
 
