@@ -33,6 +33,11 @@ class Camera(models.Model):
             help_text='При установке параметра учитывать \
             частоту траффика на конкртеном шлагбауме')
 
+    min_width = models.IntegerField(default=150, \
+                    verbose_name='Минимальная ширина автомобиля')
+    min_height = models.IntegerField(default=150, \
+                    verbose_name='Минимальная высота автомобиля')
+                    
     class Meta:
         verbose_name = 'Камера'
         verbose_name_plural = 'Камеры'

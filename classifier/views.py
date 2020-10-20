@@ -215,7 +215,6 @@ def read_camera(camera):
                 for box, _ in boxes:
                     (y, h, x, w) = box
                     roi = orig[y: y+h, x: x+w]
-                    cv2.imwrite(get_random_string(10) + '.png', roi)
 
                     print('bar')
                     try:
