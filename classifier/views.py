@@ -178,6 +178,7 @@ def read_camera(camera):
     cap = cv2.VideoCapture(camera.ip_adress)
     thread = threading.currentThread()
     print(camera.seconds)
+    count_read = camera.seconds * int(cap.get(cv2.CAP_PROP_FPS))
 
     count = 0
     if cap.isOpened():
@@ -196,7 +197,7 @@ def read_camera(camera):
                 cap = cv2.VideoCapture(camera.ip_adress)
                 continue
 
-            if count % camera.seconds == 0:
+            if count % count_read == 0:
                 cv2.imwrite('test_{}.png'.format(camera.pk), image)
                 print('foo-count', count)
 
@@ -247,7 +248,6 @@ def start(request, pk):
 
     return HttpResponse('Была запущена камера: {}'.format(camera.adress))
 
-@login_required
 def start_all(request):
     cameras = Camera.objects.all()
     for camera in cameras:
