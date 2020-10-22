@@ -1,0 +1,184 @@
+[2020-10-21 15:05:57 +0300] [29812] [INFO] Starting gunicorn 20.0.4
+[2020-10-21 15:05:57 +0300] [29812] [INFO] Listening at: http://0.0.0.0:8000 (29812)
+[2020-10-21 15:05:57 +0300] [29812] [INFO] Using worker: sync
+[2020-10-21 15:05:57 +0300] [29815] [INFO] Booting worker with pid: 29815
+[2020-10-21 15:06:38 +0300] [29812] [INFO] Handling signal: int
+[2020-10-21 12:06:38 +0000] [29815] [INFO] Worker exiting (pid: 29815)
+[2020-10-21 15:06:38 +0300] [29812] [INFO] Shutting down: Master
+[2020-10-21 15:07:33 +0300] [29830] [INFO] Starting gunicorn 20.0.4
+[2020-10-21 15:07:33 +0300] [29830] [INFO] Listening at: http://0.0.0.0:8000 (29830)
+[2020-10-21 15:07:33 +0300] [29830] [INFO] Using worker: sync
+[2020-10-21 15:07:33 +0300] [29833] [INFO] Booting worker with pid: 29833
+[2020-10-21 15:07:39 +0300] [29830] [INFO] Handling signal: int
+[2020-10-21 12:07:39 +0000] [29833] [INFO] Worker exiting (pid: 29833)
+[2020-10-21 15:07:40 +0300] [29830] [INFO] Shutting down: Master
+[2020-10-21 15:08:02 +0300] [29842] [INFO] Starting gunicorn 20.0.4
+[2020-10-21 15:08:02 +0300] [29842] [INFO] Listening at: http://0.0.0.0:8000 (29842)
+[2020-10-21 15:08:02 +0300] [29842] [INFO] Using worker: sync
+[2020-10-21 15:08:02 +0300] [29845] [INFO] Booting worker with pid: 29845
+[2020-10-21 18:00:07 +0300] [29842] [INFO] Handling signal: hup
+[2020-10-21 18:00:07 +0300] [29842] [INFO] Hang up: Master
+[2020-10-21 18:00:07 +0300] [1253] [INFO] Booting worker with pid: 1253
+[2020-10-22 11:38:15 +0300] [29842] [CRITICAL] WORKER TIMEOUT (pid:1253)
+[2020-10-22 08:38:15 +0000] [1253] [INFO] Worker exiting (pid: 1253)
+[2020-10-22 11:38:16 +0300] [17823] [INFO] Booting worker with pid: 17823
+[2020-10-22 12:51:12 +0300] [29842] [CRITICAL] WORKER TIMEOUT (pid:17823)
+[2020-10-22 09:51:12 +0000] [17823] [INFO] Worker exiting (pid: 17823)
+[2020-10-22 12:51:12 +0300] [19329] [INFO] Booting worker with pid: 19329
+[2020-10-22 09:52:11 +0000] [19329] [INFO] Worker exiting (pid: 19329)
+[2020-10-22 12:52:11 +0300] [29842] [INFO] Handling signal: term
+[2020-10-22 12:52:11 +0300] [29842] [INFO] Shutting down: Master
+[2020-10-22 16:57:58 +0300] [23328] [INFO] Starting gunicorn 20.0.4
+[2020-10-22 16:57:58 +0300] [23328] [INFO] Listening at: http://0.0.0.0:8000 (23328)
+[2020-10-22 16:57:58 +0300] [23328] [INFO] Using worker: threads
+[2020-10-22 16:57:58 +0300] [23331] [INFO] Booting worker with pid: 23331
+[2020-10-22 16:59:42 +0300] [23328] [INFO] Handling signal: winch
+[2020-10-22 16:59:42 +0300] [23328] [INFO] Handling signal: winch
+[2020-10-22 16:59:42 +0300] [23328] [INFO] Handling signal: winch
+[2020-10-22 16:59:42 +0300] [23328] [INFO] Handling signal: winch
+[2020-10-22 16:59:42 +0300] [23328] [INFO] Handling signal: winch
+[2020-10-22 17:00:45 +0300] [23412] [INFO] Booting worker with pid: 23412
+[2020-10-22 17:02:03 +0300] [23476] [INFO] Booting worker with pid: 23476
+[2020-10-22 17:03:51 +0300] [23546] [INFO] Booting worker with pid: 23546
+[2020-10-22 17:05:21 +0300] [23608] [INFO] Booting worker with pid: 23608
+[2020-10-22 17:07:04 +0300] [23682] [INFO] Booting worker with pid: 23682
+[2020-10-22 17:09:01 +0300] [23756] [INFO] Booting worker with pid: 23756
+[2020-10-22 17:11:43 +0300] [23844] [INFO] Booting worker with pid: 23844
+[2020-10-22 17:12:57 +0300] [23914] [INFO] Booting worker with pid: 23914
+[2020-10-22 17:17:17 +0300] [24032] [INFO] Booting worker with pid: 24032
+[2020-10-22 17:19:08 +0300] [24112] [INFO] Booting worker with pid: 24112
+[2020-10-22 17:20:18 +0300] [24181] [INFO] Booting worker with pid: 24181
+[2020-10-22 17:23:02 +0300] [24265] [INFO] Booting worker with pid: 24265
+[2020-10-22 17:23:33 +0300] [23328] [INFO] Handling signal: int
+[2020-10-22 14:23:33 +0000] [24265] [INFO] Worker exiting (pid: 24265)
+[2020-10-22 17:23:33 +0300] [23328] [INFO] Shutting down: Master
+[2020-10-22 17:32:24 +0300] [24557] [INFO] Starting gunicorn 20.0.4
+[2020-10-22 17:32:24 +0300] [24557] [INFO] Listening at: http://0.0.0.0:8000 (24557)
+[2020-10-22 17:32:24 +0300] [24557] [INFO] Using worker: threads
+[2020-10-22 17:32:24 +0300] [24560] [INFO] Booting worker with pid: 24560
+[2020-10-22 17:34:33 +0300] [24636] [INFO] Booting worker with pid: 24636
+[2020-10-22 17:36:04 +0300] [24710] [INFO] Booting worker with pid: 24710
+[2020-10-22 17:37:01 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:01 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:01 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:01 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:01 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:01 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:01 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:01 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:01 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:02 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:03 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:04 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:37:05 +0300] [24557] [INFO] Handling signal: winch
+[2020-10-22 17:38:04 +0300] [24774] [INFO] Booting worker with pid: 24774
+[2020-10-22 17:42:24 +0300] [24870] [INFO] Booting worker with pid: 24870
+[2020-10-22 17:43:47 +0300] [24940] [INFO] Booting worker with pid: 24940
+[2020-10-22 17:45:19 +0300] [25004] [INFO] Booting worker with pid: 25004
+[2020-10-22 17:48:30 +0300] [25095] [INFO] Booting worker with pid: 25095
+[2020-10-22 17:57:32 +0300] [25231] [INFO] Booting worker with pid: 25231
+[2020-10-22 18:53:46 +0300] [26014] [INFO] Booting worker with pid: 26014
+[2020-10-22 19:03:57 +0300] [24557] [INFO] Handling signal: int
+[2020-10-22 16:03:57 +0000] [26014] [INFO] Worker exiting (pid: 26014)
+[2020-10-22 19:03:57 +0300] [24557] [INFO] Shutting down: Master
