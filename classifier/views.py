@@ -297,8 +297,7 @@ def stop(request, pk):
 
 @login_required
 def stop_all(request):
-    for pk, thread in threads:
-    threads.items():
+    for pk, thread in threads.items():
         camera = Camera.objects.get(pk=pk)
         if camera.active:
 
