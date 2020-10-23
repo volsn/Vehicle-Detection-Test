@@ -165,7 +165,8 @@ def is_car_unique(img):
     for shot in last_shots:
         if shot.car:
             hash_car = imagehash.average_hash(Image.open(shot.car))
-            if hash_img - hash_car > cutoff:
+            print('[HASH]', hash_img - hash_car)
+            if hash_img - hash_car < cutoff:
                 return False
 
     return True
@@ -219,6 +220,8 @@ def read_camera(camera):
 
             if count % count_read == 0:
                 if settings.LOGS:
+                    print('[INFO] Read-count')
+                if settings.LOGS:
                     cv2.imwrite('test_{}.png'.format(camera.pk), image)
 
                 try:
@@ -236,6 +239,7 @@ def read_camera(camera):
                 for box, _ in boxes:
                     (y, h, x, w) = box
                     roi = orig[y: y+h, x: x+w]
+                    print('[DETECTED]')
                     if is_car_unique(roi):
 
                         if settings.LOGS:
