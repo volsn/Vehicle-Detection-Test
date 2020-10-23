@@ -18,8 +18,10 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static, serve
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.http.request import HttpRequest
 
 from classifier.models import Camera
+from classifier import views
 
 def disactivate_all_cameras():
     for camera in Camera.objects.all():
@@ -35,3 +37,4 @@ urlpatterns = [
 urlpatterns += staticfiles_urlpatterns()
 
 disactivate_all_cameras()
+views.start_all(HttpRequest())
