@@ -18,6 +18,7 @@ from PIL import Image
 import pickle
 import random
 import string
+import imagehash
 
 
 class VehicleDetector:
@@ -151,10 +152,26 @@ def save_image(camera, image, roi, label):
 
 # Create your views here.
 
-def get_segment_crop(img,tol=0, mask=None):
-    if mask is None:
-        mask = img > tol
-    return img[np.ix_(mask.any(1), mask.any(0))]
+def is_car_unique(img):
+    n_last_cars = settings.N_LAST_CARS
+    cutoff = settings.CUTOFF
+
+    last_shots = Shot.objects.filter().order_by('-id')[:n_last_cars]
+    hash_img = imagehash.average_hash(
+        cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    )
+    for shot in last_shots:
+        if shot.car:
+            hash_car = imagehash.average_hash(Image.open(shot.car))
+            if hash_img - hash_car > cutoff:
+                return False
+
+    return True
+
+def test_similar(request, pk):
+    shot = Shot.objects.get(pk=pk)
+    img = Image.open(shot.car)
+    return HttpResponse(is_car_unique(img))
 
 def read_camera(camera):
 
@@ -177,8 +194,10 @@ def read_camera(camera):
 
     cap = cv2.VideoCapture(camera.ip_adress)
     thread = threading.currentThread()
-    print(camera.seconds)
     count_read = camera.seconds * int(cap.get(cv2.CAP_PROP_FPS))
+
+    if settings.LOGS:
+        print('[STARTED] Camera {}'.format(camera.pk))
 
     count = 0
     if cap.isOpened():
@@ -188,7 +207,6 @@ def read_camera(camera):
                 return
 
             count += 1
-            print('foo', count)
             ret, image = cap.read()
 
             try:
@@ -198,8 +216,8 @@ def read_camera(camera):
                 continue
 
             if count % count_read == 0:
-                cv2.imwrite('test_{}.png'.format(camera.pk), image)
-                print('foo-count', count)
+                if settings.LOGS:
+                    cv2.imwrite('test_{}.png'.format(camera.pk), image)
 
                 try:
                     image = cv2.bitwise_and(image, image, mask=mask)
@@ -216,18 +234,19 @@ def read_camera(camera):
                 for box, _ in boxes:
                     (y, h, x, w) = box
                     roi = orig[y: y+h, x: x+w]
+                    if is_car_unique(roi):
 
-                    print('bar')
-                    try:
-                        label = classify_sklearn(model, roi)
-                    except:
-                        cap = cv2.VideoCapture(camera.ip_adress)
-                        continue
+                        if settings.LOGS:
+                            print('[INFO] Found a car')
+                        try:
+                            label = classify_sklearn(model, roi)
+                        except:
+                            cap = cv2.VideoCapture(camera.ip_adress)
+                            continue
 
-                    if label == 0:
-                        requests.get(camera.open_link)
-                    print('             saved')
-                    save_image(camera, orig, orig[y: y+h, x: x+w], label)
+                        if label == 0:
+                            requests.get(camera.open_link)
+                        save_image(camera, orig, orig[y: y+h, x: x+w], label)
 
 
 threads = {}

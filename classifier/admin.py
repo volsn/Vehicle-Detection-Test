@@ -34,8 +34,8 @@ class ShotAdmin(admin.ModelAdmin):
     actions = ('change_class_to_civil', 'change_class_to_ambulance',)
 
     def size(self, obj):
-        if not hasattr(obj.car, 'url'):
-            return 'Nan'
+        if not obj.car:
+            return 'NaN'
         return '{}x{}'.format(obj.car.width, obj.car.height)
 
     """
@@ -62,7 +62,7 @@ class ShotAdmin(admin.ModelAdmin):
 
     def display_car_image_list(self, obj):
 
-        if not hasattr(obj.car, 'url'):
+        if not obj.car:
             return 'NaN'
 
         # Resizing
