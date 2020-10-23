@@ -30,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 # Some global vars
-LOGS = False
+LOGS = True
 N_LAST_CARS = 10
 CUTOFF = 15
 
