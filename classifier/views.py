@@ -158,7 +158,9 @@ def is_car_unique(img):
 
     last_shots = Shot.objects.filter().order_by('-id')[:n_last_cars]
     hash_img = imagehash.average_hash(
-        cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        Image.fromarray(
+            cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        )
     )
     for shot in last_shots:
         if shot.car:
