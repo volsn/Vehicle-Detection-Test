@@ -33,7 +33,6 @@ ALLOWED_HOSTS = ['*']
 LOGS = True
 N_LAST_CARS = 10
 CUTOFF = 15
-settings.threads = {}
 
 
 # Application definition

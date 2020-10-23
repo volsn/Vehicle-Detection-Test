@@ -250,6 +250,8 @@ def read_camera(camera):
                             requests.get(camera.open_link)
                         save_image(camera, orig, orig[y: y+h, x: x+w], label)
 
+threads = {}
+
 @login_required
 def start(request, pk):
     camera = Camera.objects.get(pk=pk)
@@ -258,7 +260,7 @@ def start(request, pk):
         return HttpResponse('Ошибка! Камера уже запущена')
 
     t = threading.Thread(target=read_camera, args=(camera,))
-    settings.threads[camera.pk] = t
+    threads[camera.pk] = t
     t.start()
 
     camera.active = True
@@ -271,7 +273,7 @@ def start_all(request):
     for camera in cameras:
         if not camera.active:
             t = threading.Thread(target=read_camera, args=(camera,))
-            settings.threads[camera.pk] = t
+            threads[camera.pk] = t
             t.start()
             camera.active = True
             camera.save()
@@ -284,8 +286,8 @@ def stop(request, pk):
     if not camera.active:
         return HttpResponse('Ошибка! Камера уже выключена')
 
-    settings.threads[pk].do_run = False
-    settings.threads[pk].join()
+    threads[pk].do_run = False
+    threads[pk].join()
 
     camera.active=False
     camera.save()
@@ -295,7 +297,8 @@ def stop(request, pk):
 
 @login_required
 def stop_all(request):
-    for pk, thread in settings.threads.items():
+    for pk, thread in threads:
+    threads.items():
         camera = Camera.objects.get(pk=pk)
         if camera.active:
 
