@@ -273,6 +273,7 @@ def start(request, pk):
     return HttpResponse('Была запущена камера: {}'.format(camera.adress))
 
 def start_all(request):
+    #print('Hiii')
     cameras = Camera.objects.all()
     for camera in cameras:
         if not camera.active:

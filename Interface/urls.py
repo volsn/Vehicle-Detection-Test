@@ -36,5 +36,7 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
 
+
 disactivate_all_cameras()
 views.start_all(HttpRequest())
+
